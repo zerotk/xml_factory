@@ -31,7 +31,7 @@ setup(
 
     packages=find_packages(exclude=['tests']),
     install_requires=['six'],
-    tests_require=['tox'],
+    tests_require=['tox', 'virtualenv'],
 
     cmdclass = {'test': Tox},
 
