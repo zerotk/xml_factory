@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ESSS/xml_factory.svg?branch=master)](https://travis-ci.org/ESSS/xml_factory) [![Coverage Status](https://coveralls.io/repos/ESSS/xml_factory/badge.svg?branch=master)](https://coveralls.io/r/ESSS/xml_factory?branch=master)
+
 XML Factory
 ===========
 
