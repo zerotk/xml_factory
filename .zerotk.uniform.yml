@@ -19,3 +19,4 @@ tests_require:
   - pytest
   - coverage
   - cogapp
+  - pytest-datadir

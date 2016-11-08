@@ -4,4 +4,5 @@ six
 pytest
 coverage
 cogapp
+pytest-datadir
 
