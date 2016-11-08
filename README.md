@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/ESSS/xml_factory.svg?branch=master)](https://travis-ci.org/ESSS/xml_factory) [![Coverage Status](https://coveralls.io/repos/ESSS/xml_factory/badge.svg?branch=master)](https://coveralls.io/r/ESSS/xml_factory?branch=master)
+[![PyPI](https://img.shields.io/pypi/v/zerotk.xml_factory.svg?style=flat-square)](https://pypi.python.org/pypi/zerotk.xml_factory)
+[![Travis](https://img.shields.io/travis/zerotk/xml_factory.svg?style=flat-square)](https://travis-ci.org/zerotk/xml_factory)
+[![Coveralls](https://img.shields.io/coveralls/zerotk/xml_factory.svg?style=flat-square)](https://coveralls.io/github/zerotk/xml_factory)
 
 XML Factory
 ===========
