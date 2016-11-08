@@ -1,5 +1,5 @@
 from __future__ import unicode_literals, absolute_import, print_function
-from StringIO import StringIO
+from six import StringIO
 from xml.etree import ElementTree
 
 from zerotk.string import dedent
@@ -22,11 +22,11 @@ class TestXmlFactory(object):
         factory['login'] = 'Bravo'
 
         assert (
-            factory.GetContents(xml_header=True)
+            factory.get_contents(xml_header=True)
             == dedent(self.test_simplest.__doc__)
         )
-        assert factory.AsDict() == {"login": "Bravo", "name": "Alpha"}
-        assert factory.AsJson() == '{"login": "Bravo", "name": "Alpha"}'
+        assert factory.as_dict() == {"name": "Alpha", "login": "Bravo"}
+        assert factory.as_json() == '{"name": "Alpha", "login": "Bravo"}'
 
     def test_simple(self):
         '''
@@ -44,16 +44,16 @@ class TestXmlFactory(object):
         factory['location/city'] = 'Charlie'
 
         assert (
-            factory.GetContents()
+            factory.get_contents()
             == dedent(self.test_simple.__doc__)
         )
-        assert factory.AsDict() == {"login": "Bravo", "name": "Alpha", "location": {"city": "Charlie"}}
-        assert factory.AsJson() == '{"login": "Bravo", "name": "Alpha", "location": {"city": "Charlie"}}'
+        assert factory.as_dict() == {"name": "Alpha", "login": "Bravo", "location": {"city": "Charlie"}}
+        assert factory.as_json() == '{"name": "Alpha", "login": "Bravo", "location": {"city": "Charlie"}}'
 
     def test_attributes(self):
         '''
         <root>
-          <alpha one="1" two="2">Alpha</alpha>
+          <alpha four="4" one="1" three="3" two="2">Alpha</alpha>
           <bravo>
             <charlie three="3"/>
           </bravo>
@@ -63,15 +63,20 @@ class TestXmlFactory(object):
         factory['alpha'] = 'Alpha'
         factory['alpha@one'] = '1'
         factory['alpha@two'] = '2'
+        factory['alpha@three'] = '3'
+        factory['alpha@four'] = '4'
         factory['bravo/charlie@three'] = '3'
 
         assert (
-            factory.GetContents()
+            factory.get_contents()
             == dedent(self.test_attributes.__doc__)
         )
         # We're ignoring attributes and empty tags for now.
-        assert factory.AsDict() == {"alpha": "Alpha", "bravo": {"charlie": None}}
-        assert factory.AsJson() == '{"alpha": "Alpha", "bravo": {"charlie": null}}'
+        assert factory.as_dict() == {
+            'alpha': {'one': '1', 'two': '2', 'three': '3', 'four': '4'}, 'bravo': {'charlie': {'three': '3'}}
+        }
+        assert factory.as_json() == \
+            '{"alpha": {"four": "4", "one": "1", "three": "3", "two": "2"}, "bravo": {"charlie": {"three": "3"}}}'
 
     def test_repeating_tags(self):
         '''
@@ -104,10 +109,10 @@ class TestXmlFactory(object):
         factory['components/component+/name'] = 'Charlie'
 
         assert (
-            factory.GetContents()
+            factory.get_contents()
             == dedent(self.test_repeating_tags.__doc__)
         )
-        assert factory.AsDict() == {
+        assert factory.as_dict() == {
             "elements": {"name": ["Alpha", "Bravo", "Charlie"]},
             "components": {"component": [
                 {"name": "Alpha"},
@@ -115,7 +120,7 @@ class TestXmlFactory(object):
                 {"name": "Charlie"}
             ]}
         }
-        assert factory.AsJson() == '{"elements": {"name": ["Alpha", "Bravo", "Charlie"]}, "components": '\
+        assert factory.as_json() == '{"elements": {"name": ["Alpha", "Bravo", "Charlie"]}, "components": '\
             '{"component": [{"name": "Alpha"}, {"name": "Bravo"}, {"name": "Charlie"}]}}'
 
     def test_hudson_job(self):
@@ -165,7 +170,7 @@ class TestXmlFactory(object):
         factory['customWorkspace'] = 'WORKSPACE'
 
         assert (
-            factory.GetContents()
+            factory.get_contents()
             == dedent(self.test_hudson_job.__doc__)
         )
 
@@ -181,7 +186,7 @@ class TestXmlFactory(object):
         triggers['@class'] = 'vector'
 
         assert (
-            factory.GetContents()
+            factory.get_contents()
             == dedent(self.test_trigger_class.__doc__)
         )
 
@@ -201,15 +206,14 @@ class TestXmlFactory(object):
           </alpha>
         </root>
         '''
-        iss = file(datadir['input.xml'], 'r')
+        iss = open(datadir['input.xml'], 'r')
         oss = StringIO()
 
         WritePrettyXML(iss, oss)
         assert oss.getvalue() == dedent(self.test_pretty_xml_to_stream.__doc__)
 
     def test_pretty_xml_to_file(self, datadir):
-        import filecmp
-        iss = file(datadir['input.xml'], 'r')
+        iss = open(datadir['input.xml'], 'r')
         obtained_filename = datadir['pretty.obtained.xml']
         expected_filename = datadir['pretty.expected.xml']
 

@@ -138,9 +138,11 @@ def safe_split(s, sep, maxsplit=None, default='', reversed=False):
     # NOTE: Can't import "string" module for string.split/string.rsplit because of module name
     # clashing with this module.
     if reversed:
-        split = lambda s,*args: s.rsplit(*args)
+        def split(s, *args):
+            return s.rsplit(*args)
     else:
-        split = lambda s,*args: s.split(*args)
+        def split(s, *args):
+            return s.split(*args)
 
     if maxsplit is None:
         result = split(s, sep)
@@ -240,6 +242,6 @@ def match_any(text, regexes):
     """
     import re
     for i_regex in regexes:
-        if re.match(i_regex, text) != None:
+        if re.match(i_regex, text) is not None:
             return True
     return False

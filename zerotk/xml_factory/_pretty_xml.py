@@ -3,10 +3,6 @@ from xml.etree import ElementTree
 import six
 
 
-
-#===================================================================================================
-# WritePrettyXML
-#===================================================================================================
 def WritePrettyXML(iss, oss):
     '''
     Writes the iss file in pretty xml.
@@ -33,10 +29,6 @@ def WritePrettyXML(iss, oss):
             out_stream.close()
 
 
-
-#===================================================================================================
-# WritePrettyXMLElement
-#===================================================================================================
 def WritePrettyXMLElement(oss, element, indent=0):
     '''
     Writes an xml element in the given file (oss) recursively, in pretty xml.
@@ -79,4 +71,3 @@ def WritePrettyXMLElement(oss, element, indent=0):
     if element.text is None:
         oss.write('\n' + INDENT * indent)
     oss.write('</%s>' % element.tag)
-
