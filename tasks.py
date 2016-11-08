@@ -1,27 +1,27 @@
-from invoke import run, task
+import invoke
 
 
-@task
-def release():
+@invoke.task
+def release(ctx):
     """
     Publishes the project on PyPI.
 
     We have automatic publishing enabled on TRAVIS build, so this is not
     necessary... but I'll keep here for reference.
     """
-    run("python setup.py sdist upload")
+    ctx.run("python setup.py sdist upload")
 
 
-@task
-def test():
+@invoke.task
+def test(ctx):
     """
     Executes all the tests.
     """
-    run("python setup.py pytest")
+    ctx.run("python setup.py pytest")
 
 
-@task
-def travis_setpass():
+@invoke.task
+def travis_setpass(ctx):
     """
     Stores the PyPI password (encrypted) in the .travis.yml file.
     """
