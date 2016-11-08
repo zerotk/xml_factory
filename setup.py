@@ -1,61 +1,49 @@
-from __future__ import unicode_literals
-from setuptools import setup, find_packages
-from setuptools.command.test import test as TestCommand
-import sys
+#!/bin/env python
+from setuptools import setup
 
 
-
-#===================================================================================================
-# PyTest
-#===================================================================================================
-class PyTest(TestCommand):
-    def finalize_options(self):
-        TestCommand.finalize_options(self)
-        self.test_args = []
-        self.test_suite = True
-
-    def run_tests(self):
-        import pytest
-        errcode = pytest.main(self.test_args)
-        sys.exit(errcode)
-
-
-
-#===================================================================================================
-# setup
-#===================================================================================================
 setup(
-    name='xml_factory',
-    provides=['xml_factory'],
-    version='1.0',
+    name='zerotk.xml_factory',
+    use_scm_version=True,
 
-    packages=find_packages(exclude=['tests']),
-    install_requires=['six'],
-    tests_require=['pytest'],
+    author='Alexandre Andrade, Diogo de Campos',
+    author_email='kaniabi@gmail.com, campos.ddc@gmail.com',
 
-    cmdclass = {'test': PyTest},
+    url='https://github.com/zerotk/reraiseit',
 
+    description='XML/Dict/Json Generator.',
+    long_description='''XMl Factory is a simple XMl writer that uses dict syntax to write files.''',
 
-    #===============================================================================================
-    # Project description
-    #===============================================================================================
-    author='Alexandre Motta de Andrade, Diogo de Campos',
-    author_email='ama@esss.com.br, campos.ddc@gmail.com',
-
-    url='https://github.com/ESSS/xml_factory',
-
-    license='LGPL v3+',
-    description='XMl Factory is a simple XMl writer that uses dict syntax to write files.',
-    keywords='xml dict write pretty',
     classifiers=[
+        # How mature is this project? Common values are
+        #   3 - Alpha
+        #   4 - Beta
+        #   5 - Production/Stable
         'Development Status :: 5 - Production/Stable',
+
+        # Indicate who your project is intended for
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)',
-        'Operating System :: OS Independent',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+
+        # Pick your license as you wish (should match "license" above)
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+
+        # Specify the Python versions you support here. In particular, ensure
+        # that you indicate whether you support Python 2, Python 3 or both.
+        'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.2',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
-        'Topic :: Software Development',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.5',
     ],
+
+    include_package_data=True,
+
+    packages=['zerotk', 'zerotk.xml_factory'],
+    namespace_packages=['zerotk'],
+
+    keywords=['xml', 'dict', 'json', 'generator', 'pretty'],
+
+    install_requires=['six'],
+    setup_requires=['setuptools_scm', 'pytest-runner'],
+    tests_require=['pytest', 'coverage', 'cogapp'],
 )
